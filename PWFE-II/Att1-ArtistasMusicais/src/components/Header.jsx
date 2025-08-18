@@ -10,7 +10,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
       <nav className="container mx-auto flex items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src={banner} alt="Laufey" className="h-10" />
+          <img src={banner} alt="Laufey" className="h-15" />
         </Link>
         
         <div className="flex gap-2">
