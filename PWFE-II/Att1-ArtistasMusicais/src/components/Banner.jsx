@@ -1,24 +1,27 @@
-// src/components/Banner.jsx
-import bannerImg from "../assets/Banner.jpg";
-import bannerVideo from "../assets/star-bg.mp4";
+/**
+ * Banner component with video background
+ * Displays artist promotional image
+ */
+import bannerImg from '../assets/banner.jpg'
+import bannerVideo from '../assets/star-bg.mp4'
 
 export default function Banner() {
   return (
-    <section className="relative w-full h-screen overflow-hidden flex flex-col justify-end items-center">
+    <section className="relative w-full h-[500px] flex items-center justify-center overflow-hidden">
       <video
         src={bannerVideo}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover brightness-50"
+        aria-hidden="true"
       />
-
       <img
         src={bannerImg}
-        alt="Banner"
-        className="relative z-10 w-[75%] h-auto object-contain"
+        alt="Laufey artist banner"
+        className="relative z-10 w-full max-w-4xl object-contain"
       />
     </section>
-  );
+  )
 }
