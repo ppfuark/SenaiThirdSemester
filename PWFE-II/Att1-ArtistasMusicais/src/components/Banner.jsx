@@ -1,11 +1,10 @@
 // src/components/Banner.jsx
-import bannerImg from "../assets/Banner.jpg"
-import bannerVideo from "../assets/star-bg.mp4"
+import bannerImg from "../assets/Banner.jpg";
+import bannerVideo from "../assets/star-bg.mp4";
 
 export default function Banner() {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
-      {/* Vídeo de fundo */}
+    <section className="relative w-full h-screen overflow-hidden flex flex-col justify-end items-center">
       <video
         src={bannerVideo}
         autoPlay
@@ -15,11 +14,10 @@ export default function Banner() {
         className="absolute w-full h-full object-cover"
       />
 
-      {/* Imagem sobre o vídeo */}
       <img
         src={bannerImg}
         alt="Banner"
-        className="absolute inset-0 w-full h-full object-contain z-10"
+        className="relative z-10 w-[75%] h-auto object-contain"
       />
     </section>
   );
