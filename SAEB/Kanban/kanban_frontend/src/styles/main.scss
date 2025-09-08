@@ -1,0 +1,328 @@
+// Variáveis de cores - Tema Roxo
+$white: #FFFFFF;
+$primary-purple: #6A0DAD;
+$purple-light: #8A2BE2;
+$purple-dark: #4B0082;
+$purple-lighter: #E6E6FA;
+$black: #2D2D2D;
+$gray-light: #F5F5F7;
+$gray-medium: #E5E5EA;
+$gray-dark: #8E8E93;
+$success: #4CD964;
+$warning: #FF9500;
+$danger: #FF3B30;
+
+// Fontes
+$font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+}
+
+@mixin hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(106, 13, 173, 0.2);
+  }
+}
+
+@mixin gradient-bg {
+  background: linear-gradient(135deg, $primary-purple 0%, $purple-light 100%);
+}
+
+// Estilos globais
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family;
+  background: linear-gradient(135deg, $gray-light 0%, $white 100%);
+  color: $black;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+// Header melhorado
+.header {
+  @include gradient-bg;
+  color: $white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  
+  &__nav {
+    display: flex;
+    gap: 0.5rem;
+    
+    &-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: $white;
+      padding: 0.75rem 1.5rem;
+    
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      
+      &:hover, &.active {
+        background: $white;
+        color: $primary-purple;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Forms comuns melhorados
+.user-form, .task-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: $white;
+  padding: 2.5rem;
+  @include card-shadow;
+  
+  &__title {
+    margin-bottom: 2rem;
+    color: $primary-purple;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  &__field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  &__label {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: $purple-dark;
+    font-size: 0.95rem;
+  }
+  
+  &__input, &__select, &__textarea {
+    padding: 1rem 1.25rem;
+    border: 2px solid $gray-medium;
+    font-family: $font-family;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-purple;
+      box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.1);
+    }
+    
+    &.error {
+      border-color: $danger;
+      box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+    }
+  }
+  
+  &__textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  &__error {
+    color: $danger;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  }
+  
+  &__submit {
+    @include gradient-bg;
+    color: $white;
+    border: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    @include hover-effect;
+    
+    &:hover {
+      background: linear-gradient(135deg, $purple-dark 0%, $primary-purple 100%);
+    }
+  }
+}
+
+// Task Board melhorado
+.task-board {
+  &__title {
+    margin-bottom: 2rem;
+    color: $primary-purple;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  
+  &__column {
+    background: $white;
+    padding: 1.5rem;
+    @include card-shadow;
+    
+    &-title {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      
+      &:first-child { border-color: $warning; color: $warning; }
+      &:nth-child(2) { border-color: $primary-purple; color: $primary-purple; }
+      &:last-child { border-color: $success; color: $success; }
+    }
+  }
+  
+  &__tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
+
+// Task Card melhorado
+.task-card {
+  background: $white;
+  padding: 1.5rem;
+  @include card-shadow;
+  @include hover-effect;
+  border-left: 4px solid;
+  
+  &--baixa { border-left-color: $success; }
+  &--media { border-left-color: $warning; }
+  &--alta { border-left-color: $danger; }
+  
+  &__content {
+    margin-bottom: 1.25rem;
+  }
+  
+  &__description {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: $black;
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+  
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  &__detail {
+    color: $gray-dark;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &::before {
+      content: "•";
+      color: $primary-purple;
+      font-weight: bold;
+    }
+  }
+  
+  &__priority {
+    font-weight: 600;
+    
+    &--baixa { color: $success; }
+    &--media { color: $warning; }
+    &--alta { color: $danger; }
+  }
+  
+  &__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  &__status-select {
+    padding: 0.5rem;
+    border: 2px solid $gray-medium;
+    flex: 1;
+    background: $gray-light;
+    font-size: 0.9rem;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-purple;
+    }
+  }
+  
+  &__btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    
+    &--edit {
+      background-color: $warning;
+      color: $white;
+      
+      &:hover {
+        background-color: darken($warning, 10%);
+      }
+    }
+    
+    &--delete {
+      background-color: $danger;
+      color: $white;
+      
+      &:hover {
+        background-color: darken($danger, 10%);
+      }
+    }
+  }
+}
