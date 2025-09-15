@@ -65,13 +65,14 @@ List<Animal> animals = [];
 void main() {
   int option = 0;
 
-  while (option != 5) {
+  while (option != 6) {
     print("\n--- Welcome to Zoomange ---");
     print("1. Add new animal");
     print("2. Edit animal");
     print("3. List all animals");
     print("4. Remove animal");
-    print("5. Exit");
+    print("5. Filter animals");
+    print("6. Exit");
 
     stdout.write("\n Choose a option: ");
     option = int.parse(stdin.readLineSync()!);
@@ -86,6 +87,8 @@ void main() {
       case 4:
         removeAnimal();
       case 5:
+        filterAnimals();
+      case 6:
         break;
       default:
         print("\n Invalid option!");
@@ -171,4 +174,39 @@ void editAnimal() {
     animals[optionEditAnimal-1].race = animalRace;
     animals[optionEditAnimal-1].size = animalSize;
   }
+}
+
+void filterAnimals(){
+  print("1. By Name");
+  print("2. By Race");
+  print("3. By Size");
+  stdout.write("\nHow would you like to filter? ");
+  int filterOption = int.parse(stdin.readLineSync()!);
+
+  switch(filterOption){
+    case 1:
+      stdout.write("\nName: ");
+      String targetName = stdin.readLineSync()!;
+
+      List<Animal>  filteredList = animals.where((animal) => animal.name == targetName).toList();
+
+      print("List: $filteredList");
+
+    case 2:
+      stdout.write("\nRace: ");
+      String targetRace = stdin.readLineSync()!;
+
+      List<Animal>  filteredList = animals.where((animal) => animal.race == targetRace).toList();
+
+      print("List: $filteredList");
+
+    case 3:
+      stdout.write("\nName: ");
+      String targetSize = stdin.readLineSync()!;
+
+      List<Animal>  filteredList = animals.where((animal) => animal.size == targetSize).toList();
+
+      print("List: $filteredList");
+  }
+
 }
