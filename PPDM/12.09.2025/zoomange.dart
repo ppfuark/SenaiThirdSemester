@@ -1,17 +1,31 @@
 import 'dart:io';
 
 abstract class Animal {
-  String race;
-  String name;
-  String size;
+  String _race;
+  String _name;
+  String _size;
 
-  Animal({required this.name, required this.race, required this.size});
+  Animal({required String name, required String race, required String size})
+      : _name = name,
+        _race = race,
+        _size = size;
+
+  // Getters
+  String get name => _name;
+  String get race => _race;
+  String get size => _size;
+
+  // Setters
+  set name(String newName) => _name = newName;
+  set race(String newRace) => _race = newRace;
+  set size(String newSize) => _size = newSize;
 
   void makeSound();
   void eat();
 
+  @override
   String toString() {
-    return "Name: $name, Race: $race, Size: $size";
+    return "Name: $_name, Race: $_race, Size: $_size";
   }
 }
 
