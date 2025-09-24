@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Box extends StatelessWidget {
-  String num;
-  Color? color;
+  final String num;
+  final Color? color;
+  final String? imgUrl;
 
-  Box({required this.num, this.color });
+  const Box({super.key, required this.num, this.color, this.imgUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,45 @@ class Box extends StatelessWidget {
       height: MediaQuery.of(context).size.width * 0.45,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color.fromARGB(255, 142, 70, 175),
+        color: Colors.deepPurple, // cor base
+        // image: imgUrl != null
+        //     ? DecorationImage(image: AssetImage(imgUrl!),fit: BoxFit.cover)
+        //     : null,
+            
       ),
-      child: Center(
-        child: Text(num, style: TextStyle(
-          color: color != null? color : Colors.white, fontSize: 50
-        ),),
+      child: 
+                  imgUrl != null ? 
+                  Stack(
+                    children: [
+                       Image.network("${imgUrl!}",fit: BoxFit.cover,),
+                      Text("$num")
+                    ],
+                  ) :Center(
+        child: Text(
+          num,
+          style: TextStyle(
+            color: color ?? Colors.white,
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
+                 
+
+        
+      
+
+
+      // child: Center(
+      //   child: Text(
+      //     num,
+      //     style: TextStyle(
+      //       color: color ?? Colors.white,
+      //       fontSize: 50,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
