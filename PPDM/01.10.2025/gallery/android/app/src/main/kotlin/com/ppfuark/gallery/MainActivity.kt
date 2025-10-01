@@ -1,0 +1,5 @@
+package com.ppfuark.gallery
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
