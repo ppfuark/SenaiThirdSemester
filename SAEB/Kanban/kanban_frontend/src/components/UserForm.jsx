@@ -37,6 +37,7 @@ const UserForm = () => {
             id="nome" 
             className={`user-form__input ${errors.nome ? 'error' : ''}`}
             {...register('nome')}
+            maxLength={50}
           />
           {errors.nome && <span className="user-form__error">{errors.nome.message}</span>}
         </div>
@@ -48,6 +49,7 @@ const UserForm = () => {
             id="email" 
             className={`user-form__input ${errors.email ? 'error' : ''}`}
             {...register('email')}
+            maxLength={50}
           />
           {errors.email && <span className="user-form__error">{errors.email.message}</span>}
         </div>

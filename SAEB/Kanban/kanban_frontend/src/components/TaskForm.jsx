@@ -16,9 +16,13 @@ const taskSchema = z.object({
 
 const TaskForm = ({ editingTask, onSaveComplete }) => {
   const [users, setUsers] = useState([]);
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
     resolver: zodResolver(taskSchema)
   });
+
+  
+  const descricaoValue = watch('descricao', '');
+  const setorValue = watch('setor', '');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -35,7 +39,7 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
 
   useEffect(() => {
     if (editingTask) {
-      setValue('usuario', editingTask.usuario);
+      setValue('usuario', String(editingTask.usuario?.id || editingTask.usuario));
       setValue('descricao', editingTask.descricao);
       setValue('setor', editingTask.setor);
       setValue('prioridade', editingTask.prioridade);
@@ -62,12 +66,15 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
     <div className="task-form">
       <h2 className="task-form__title">{editingTask ? 'Editar Tarefa' : 'Nova Tarefa'}</h2>
       <form className="task-form__form" onSubmit={handleSubmit(onSubmit)}>
+        
+        {/* Usuário */}
         <div className="task-form__field">
           <label htmlFor="usuario" className="task-form__label">Usuário</label>
           <select 
             id="usuario" 
             className={`task-form__select ${errors.usuario ? 'error' : ''}`}
             {...register('usuario')}
+            disabled={!!editingTask} 
           >
             <option value="">Selecione um usuário</option>
             {users.map(user => (
@@ -77,28 +84,41 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
           {errors.usuario && <span className="task-form__error">{errors.usuario.message}</span>}
         </div>
         
+        {/* Descrição */}
         <div className="task-form__field">
           <label htmlFor="descricao" className="task-form__label">Descrição</label>
           <textarea 
             id="descricao" 
             rows="4"
+            maxLength={300}
             className={`task-form__textarea ${errors.descricao ? 'error' : ''}`}
             {...register('descricao')}
+            disabled={!!editingTask} 
           />
+          <div className="task-form__counter">
+            {300 - (descricaoValue?.length || 0)} caracteres restantes
+          </div>
           {errors.descricao && <span className="task-form__error">{errors.descricao.message}</span>}
         </div>
         
+        {/* Setor */}
         <div className="task-form__field">
           <label htmlFor="setor" className="task-form__label">Setor</label>
           <input 
             type="text" 
             id="setor" 
+            maxLength={50}
             className={`task-form__input ${errors.setor ? 'error' : ''}`}
             {...register('setor')}
+            disabled={!!editingTask} 
           />
+          <div className="task-form__counter">
+            {50 - (setorValue?.length || 0)} caracteres restantes
+          </div>
           {errors.setor && <span className="task-form__error">{errors.setor.message}</span>}
         </div>
         
+        {/* Prioridade */}
         <div className="task-form__field">
           <label htmlFor="prioridade" className="task-form__label">Prioridade</label>
           <select 

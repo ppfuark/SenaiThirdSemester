@@ -1,4 +1,4 @@
-// Variáveis de cores - Tema Roxo
+
 $white: #FFFFFF;
 $primary-purple: #6A0DAD;
 $purple-light: #8A2BE2;
@@ -12,10 +12,8 @@ $success: #4CD964;
 $warning: #FF9500;
 $danger: #FF3B30;
 
-// Fontes
 $font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
 
-// Mixins
 @mixin card-shadow {
   box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
 }
@@ -32,7 +30,6 @@ $font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', s
   background: linear-gradient(135deg, $primary-purple 0%, $purple-light 100%);
 }
 
-// Estilos globais
 * {
   margin: 0;
   padding: 0;
@@ -61,7 +58,6 @@ body {
   width: 100%;
 }
 
-// Header melhorado
 .header {
   @include gradient-bg;
   color: $white;
@@ -103,7 +99,6 @@ body {
   }
 }
 
-// Forms comuns melhorados
 .user-form, .task-form {
   max-width: 600px;
   margin: 2rem auto;
@@ -185,7 +180,6 @@ body {
   }
 }
 
-// Task Board melhorado
 .task-board {
   &__title {
     margin-bottom: 2rem;
@@ -214,7 +208,7 @@ body {
       font-weight: 700;
       text-align: center;
       
-      &:first-child { border-color: $warning; color: $warning; }
+      &:first-child { border-color: $primary-purple; color: $primary-purple; }
       &:nth-child(2) { border-color: $primary-purple; color: $primary-purple; }
       &:last-child { border-color: $success; color: $success; }
     }
@@ -224,10 +218,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    word-break: break-all;
   }
 }
 
-// Task Card melhorado
 .task-card {
   background: $white;
   padding: 1.5rem;
