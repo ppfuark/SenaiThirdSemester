@@ -7,11 +7,11 @@ $purple-dark: #4B0082;
 $purple-lighter: #E6E6FA;
 $black: #2D2D2D;
 $gray-light: #F5F5F7;
-$gray-medium: #E5E5EA;
-$gray-dark: #8E8E93;
-$success: #4CD964;
-$warning: #FF9500;
-$danger: #FF3B30;
+$gray-medium: #c0c0c0;
+$gray-dark: #383838;
+$success: #9642e4;
+$danger: #660066;
+$warning: #800080;
 
 $font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
 
@@ -350,12 +350,12 @@ body {
     transition: all 0.2s ease;
     
     &--edit {
-      background-color: $warning;
-      color: $white;
+      border: solid 1px $warning;
+      color: $warning;
       
       &:hover {
-        // Substituição do darken($warning, 10%)
-        background-color: color.adjust($warning, $lightness: -10%);
+        background-color: $warning;
+        color: white  ;
       }
     }
     
@@ -384,7 +384,7 @@ body {
 .task-count {
   font-size: 0.8em;
   color: $gray-dark;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgb(236, 236, 236);
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   font-weight: normal;
