@@ -5,10 +5,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { taskService, userService } from '../services/api';
 import '../styles/main.scss';
 
+// Regex para validações
+const sectorRegex = /^[A-Za-zÀ-ÿ\s\-]+$/;
+const descriptionRegex = /^[A-Za-zÀ-ÿ0-9\s.,!?\-]+$/;
+
 const taskSchema = z.object({
-  usuario: z.string().min(1, 'Usuário é obrigatório'),
-  descricao: z.string().min(1, 'Descrição é obrigatória'),
-  setor: z.string().min(1, 'Setor é obrigatório'),
+  usuario: z.string()
+    .min(1, 'Usuário é obrigatório'),
+  
+  descricao: z.string()
+    .min(1, 'Descrição é obrigatória')
+    .max(300, 'Descrição deve ter no máximo 300 caracteres')
+    .regex(descriptionRegex, 'Descrição contém caracteres inválidos')
+    .transform((val) => val.trim().replace(/\s+/g, ' '))
+    .refine((val) => val.length > 0, 'Descrição não pode ser apenas espaços'),
+  
+  setor: z.string()
+    .min(1, 'Setor é obrigatório')
+    .max(50, 'Setor deve ter no máximo 50 caracteres')
+    .regex(sectorRegex, 'Setor deve conter apenas letras, espaços e hífens')
+    .transform((val) => val.trim().replace(/\s+/g, ' '))
+    .refine((val) => val.length > 0, 'Setor não pode ser apenas espaços'),
+  
   prioridade: z.enum(['baixa', 'media', 'alta'], {
     errorMap: () => ({ message: 'Prioridade é obrigatória' })
   }),
@@ -16,11 +34,10 @@ const taskSchema = z.object({
 
 const TaskForm = ({ editingTask, onSaveComplete }) => {
   const [users, setUsers] = useState([]);
-  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue, watch } = useForm({
     resolver: zodResolver(taskSchema)
   });
 
-  
   const descricaoValue = watch('descricao', '');
   const setorValue = watch('setor', '');
 
@@ -39,7 +56,7 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
 
   useEffect(() => {
     if (editingTask) {
-      setValue('usuario', String(editingTask.usuario?.id || editingTask.usuario));
+      setValue('usuario', String(editingTask.usuario));
       setValue('descricao', editingTask.descricao);
       setValue('setor', editingTask.setor);
       setValue('prioridade', editingTask.prioridade);
@@ -48,18 +65,37 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
 
   const onSubmit = async (data) => {
     try {
+      // Aplica trim final antes de enviar
+      const processedData = {
+        ...data,
+        descricao: data.descricao.trim(),
+        setor: data.setor.trim(),
+        usuario: parseInt(data.usuario) // Converte para número para o Django
+      };
+
       if (editingTask) {
-        await taskService.update(editingTask.id, data);
+        await taskService.update(editingTask.id, processedData);
+        alert('Tarefa atualizada com sucesso!');
       } else {
-        await taskService.create(data);
+        await taskService.create(processedData);
+        alert('Tarefa cadastrada com sucesso!');
       }
-      alert('Cadastro concluído com sucesso');
       reset();
       if (onSaveComplete) onSaveComplete();
     } catch (error) {
       console.error('Erro ao salvar tarefa:', error);
       alert('Erro ao salvar tarefa');
     }
+  };
+
+  const sanitizeInput = (value, fieldName) => {
+    let sanitized = value.trim().replace(/\s+/g, ' ');
+    
+    if (fieldName === 'setor') {
+      sanitized = sanitized.replace(/[^A-Za-zÀ-ÿ\s\-]/g, '');
+    }
+    
+    return sanitized;
   };
 
   return (
@@ -93,7 +129,10 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
             maxLength={300}
             className={`task-form__textarea ${errors.descricao ? 'error' : ''}`}
             {...register('descricao')}
-            disabled={!!editingTask} 
+            placeholder="Descreva a tarefa..."
+            onBlur={(e) => {
+              e.target.value = sanitizeInput(e.target.value, 'descricao');
+            }}
           />
           <div className="task-form__counter">
             {300 - (descricaoValue?.length || 0)} caracteres restantes
@@ -110,7 +149,13 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
             maxLength={50}
             className={`task-form__input ${errors.setor ? 'error' : ''}`}
             {...register('setor')}
-            disabled={!!editingTask} 
+            placeholder="Ex: Desenvolvimento, Marketing..."
+            onBlur={(e) => {
+              e.target.value = sanitizeInput(e.target.value, 'setor');
+            }}
+            onInput={(e) => {
+              e.target.value = e.target.value.replace(/[0-9]/g, '');
+            }}
           />
           <div className="task-form__counter">
             {50 - (setorValue?.length || 0)} caracteres restantes
@@ -134,8 +179,12 @@ const TaskForm = ({ editingTask, onSaveComplete }) => {
           {errors.prioridade && <span className="task-form__error">{errors.prioridade.message}</span>}
         </div>
         
-        <button type="submit" className="task-form__submit">
-          {editingTask ? 'Atualizar' : 'Cadastrar'}
+        <button 
+          type="submit" 
+          className="task-form__submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Salvando...' : (editingTask ? 'Atualizar' : 'Cadastrar')}
         </button>
       </form>
     </div>
