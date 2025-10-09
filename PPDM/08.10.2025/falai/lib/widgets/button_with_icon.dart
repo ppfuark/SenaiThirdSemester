@@ -11,29 +11,19 @@ class ButtonWithIcon extends StatefulWidget {
 }
 
 class _ButtonWithIconState extends State<ButtonWithIcon> {
-  bool _isPressed = false;
+  bool _isDisable = false;
 
-  void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
-  }
-
-  void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
+  void _onTap() {
     widget.onPressed?.call();
-  }
-
-  void _onTapCancel() {
-    setState(() => _isPressed = false);
+    setState(() => _isDisable = true);
   }
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width * 0.22;
+    double size = MediaQuery.of(context).size.width * 0.17;
 
     return GestureDetector(
-      onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
-      onTapCancel: _onTapCancel,
+      onTap: _onTap,
       child: Container(
         alignment: AlignmentDirectional.bottomCenter,
         height: size * 0.8,
@@ -42,9 +32,9 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
           children: [
             Container(
               width: size,
-              height: _isPressed ? size * 0.7 : size * 0.8,
+              height: _isDisable ? size * 0.7 : size * 0.8,
               decoration: BoxDecoration(
-                color: Colors.green[700],
+                color: _isDisable ? Colors.grey[700] : Colors.green[700],
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(size * 0.4),
                   topRight: Radius.circular(size * 0.4),
@@ -55,9 +45,9 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
             ),
             Container(
               width: size,
-              height: _isPressed ? size * 0.6 : size * 0.7,
+              height: _isDisable ? size * 0.6 : size * 0.7,
               decoration: BoxDecoration(
-                color: _isPressed ? Colors.green[500] : Colors.green[400],
+                color: _isDisable ? Colors.grey[500] : Colors.green[500],
                 borderRadius: BorderRadius.circular(size * 0.4),
               ),
               child: Icon(widget.icon, color: Colors.white, size: size * 0.5),

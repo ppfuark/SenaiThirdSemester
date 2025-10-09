@@ -1,3 +1,4 @@
+import 'package:falai/widgets/button_with_icon.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,8 +9,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool clicked = false;
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ButtonWithIcon(
+              icon: Icons.add,
+              onPressed: () {
+                setState(() {
+                  clicked = !clicked;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            Text(
+              clicked ? "AIAIAIAIA" : "ops",
+              style: const TextStyle(fontSize: 24),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
