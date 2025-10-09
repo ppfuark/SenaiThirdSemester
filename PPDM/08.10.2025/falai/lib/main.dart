@@ -1,3 +1,4 @@
+import 'package:falai/widgets/button_with_icon.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,16 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: StartButton(
-            icon: Icons.star,
-            text: "START",
-            onPressed: () {
-              print("Button pressed!");
-            },
-          ),
-        ),
+        body: Column(children: [ButtonWithIcon(icon: Icons.add)]),
       ),
     );
   }
