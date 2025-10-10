@@ -1,4 +1,4 @@
-import 'package:falai/view/home_page.dart';
+import 'package:falai/view/register_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const RegisterPage(),
     );
   }
 }

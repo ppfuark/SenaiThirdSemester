@@ -2,7 +2,7 @@ class User {
   late String name;
   late int age;
   late int experience;
-  late String whyStudy;
+  late String? whyStudy;
 
   User({
     required this.name,
