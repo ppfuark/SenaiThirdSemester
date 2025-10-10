@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _userPasswordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -22,18 +23,55 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  bool _loginState(String userName, String userPassword){
-    UserViewModel userViewModel = UserViewModel();
-    Future<User?> user = userViewModel.login(userName, userPassword);
+  Future<void> _loginUser() async {
+    if (_isLoading) return;
 
-    Navigator.push(context, MaterialPageRoute(builder: 
-    (context)=>HomePage()));
-    return true;
+    final userName = _usernameController.text.trim();
+    final userPassword = _userPasswordController.text.trim();
+
+    if (userName.isEmpty || userPassword.isEmpty) {
+      _showSnackBar("Please enter both username and password");
+      return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final UserViewModel userViewModel = UserViewModel();
+      final User? user = await userViewModel.login(userName, userPassword);
+
+      if (!mounted) return;
+
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else {
+        _showSnackBar("Invalid username or password");
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showSnackBar("Login failed. Please try again.");
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Padding(
@@ -51,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.deepPurple,
                 ),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               Text(
                 "Sign In to continue",
                 style: TextStyle(
@@ -61,55 +99,66 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Username...",
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 18),
+              const SizedBox(height: 18),
               TextField(
                 controller: _userPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password...",
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 18),
+              const SizedBox(height: 18),
               ElevatedButton(
-                onPressed: () => {
-                  _loginState(_usernameController.text, _userPasswordController.text)
-                },
+                onPressed: _isLoading ? null : _loginUser,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurpleAccent,
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                child: Text(
-                  "Log In",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        "Log In",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
-              SizedBox(height: 18),
+              const SizedBox(height: 18),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
+                onTap: _isLoading
+                    ? null
+                    : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
+                      },
                 child: Text(
-                  "Don´t have an account? Sign Up ",
+                  "Don't have an account? Sign Up",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 14,
-                    color: Colors.deepPurple,
+                    color: _isLoading ? Colors.grey : Colors.deepPurple,
                   ),
                 ),
               ),

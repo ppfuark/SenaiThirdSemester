@@ -15,7 +15,7 @@ class UserViewModel extends ChangeNotifier {
             name: e['name'] as String,
             age: e['age'] as int,
             experience: e['experience'] as int,
-            whyStudy: e['whyStudy'] as String,
+            whyStudy: e['why_study'] as String,
             password: e['password'] as String,
           ),
         )
@@ -39,7 +39,7 @@ class UserViewModel extends ChangeNotifier {
     final db = await _databaseService.database;
 
     List<Map<String, dynamic>> users = await db.query(
-      "users",
+      _databaseService.userTableName,
       where: 'name = ?',
       whereArgs: [userName],
     );
