@@ -12,6 +12,11 @@ class DatabaseService {
   String _userAgeColumnName = "age";
   String _userExperienceColumnName = "experience";
   String _userWhyStudyColumnName = "why_study";
+  String _userPasswordColumnName = "password";
+
+  get userPasswordColumnName => _userPasswordColumnName;
+
+  set userPasswordColumnName(value) => _userPasswordColumnName = value;
 
   get userTableName => _userTableName;
 
@@ -51,7 +56,8 @@ class DatabaseService {
               $_userNameColumnName TEXT PRIMARY KEY NOT NULL,
               $_userAgeColumnName INTEGER NOT NULL,
               $_userExperienceColumnName INTEGER NOT NULL,
-              $_userWhyStudyColumnName TEXT NOT NULL
+              $_userWhyStudyColumnName TEXT NOT NULL,
+              $_userPasswordColumnName TEXT NOT NULL
             )
         ''');
       },

@@ -1,11 +1,13 @@
 class User {
   late String name;
+  late String password;
   late int age;
   late int experience;
   late String? whyStudy;
 
   User({
     required this.name,
+    required this.password,
     required this.age,
     this.whyStudy = "Default",
     this.experience = 0,
