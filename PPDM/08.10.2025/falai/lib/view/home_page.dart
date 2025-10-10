@@ -18,18 +18,22 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ButtonWithIcon(
-              icon: Icons.add,
-              onPressed: () {
-                setState(() {
-                  clicked = !clicked;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            Text(
-              clicked ? "AIAIAIAIA" : "ops",
-              style: const TextStyle(fontSize: 24),
+            Column(
+              children: [
+                ButtonWithIcon(
+                  icon: Icons.add,
+                  onPressed: () {
+                    setState(() {
+                      clicked = !clicked;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  clicked ? "AIAIAIAIA" : "ops",
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ],
             ),
           ],
         ),
