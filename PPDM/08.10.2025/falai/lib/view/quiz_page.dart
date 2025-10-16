@@ -13,9 +13,53 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  late Color clickedContainerColor ;
+  int? _selectedIndex;
+  bool _answered = false;
+  bool _isCorrect = false;
 
+  void _handleAnswer(int index) {
+    if (_answered) return;
 
+    setState(() {
+      _selectedIndex = index;
+      _answered = true;
+      _isCorrect =
+          widget.quizQuestion.options[index] ==
+          widget.quizQuestion.correctAnswer;
+    });
+
+    if (_isCorrect) {
+      UserViewModel userViewModel = UserViewModel();
+      User user = widget.user;
+      userViewModel.updateUser(
+        User(
+          name: user.name,
+          password: user.password,
+          age: user.age,
+          experience: user.experience + 100,
+          whyStudy: user.whyStudy,
+        ),
+      );
+    }
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  Color _getContainerColor(int index) {
+    if (!_answered) return Colors.transparent;
+
+    if (widget.quizQuestion.options[index] ==
+        widget.quizQuestion.correctAnswer) {
+      return const Color.fromARGB(255, 165, 214, 167);
+    } else if (index == _selectedIndex) {
+      return const Color.fromARGB(255, 239, 154, 154);
+    }
+    return Colors.transparent;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,36 +68,53 @@ class _QuizPageState extends State<QuizPage> {
         backgroundColor: Colors.deepPurpleAccent,
         title: Text(
           "Olá, ${widget.user.name}",
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: Column(
-        children: [
-          Text(widget.quizQuestion.question, style: TextStyle(),),
-          GridView.count(crossAxisCount: 2, children: List.generate(widget.quizQuestion.options.length, (index){
-            return GestureDetector(
-              onTap: (){
-                if (widget.quizQuestion.options[index]==widget.quizQuestion.correctAnswer){
-                  UserViewModel userViewModel = UserViewModel();
-                  User user = widget.user;
-                  userViewModel.updateUser(User(name: user.name, password: user.password, age: user.age, experience: user.experience + 100, whyStudy: user.whyStudy));
-
-                  clickedContainerColor = const Color.fromARGB(255, 165, 214, 167);
-                }
-                else{
-                  clickedContainerColor = const Color.fromARGB(255, 239, 154, 154);
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all()
-                ),
-                child: Text(widget.quizQuestion.options[index]),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.quizQuestion.question,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: List.generate(widget.quizQuestion.options.length, (
+                  index,
+                ) {
+                  return GestureDetector(
+                    onTap: () => _handleAnswer(index),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _getContainerColor(index),
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            widget.quizQuestion.options[index],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
               ),
-            );
-          }),)
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
-} 
+}

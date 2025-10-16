@@ -1,5 +1,6 @@
 import 'package:falai/data/quiz_data.dart';
 import 'package:falai/models/user.dart';
+import 'package:falai/view/quiz_page.dart';
 
 import '../../widgets/button_with_icon.dart';
 import 'package:flutter/material.dart';
@@ -63,9 +64,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
-        title: Text(
-          "Olá, ${widget.user.name}",
-          style: TextStyle(color: Colors.white),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Olá ${widget.user.name}"),
+            Text("Experience: ${widget.user.experience}"),
+          ],
         ),
       ),
       body: Column(
@@ -104,7 +108,17 @@ class _HomePageState extends State<HomePage> {
                   child: ButtonWithIcon(
                     icon: Icons.star_rounded,
                     margin: leftMargin,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuizPage(
+                            quizQuestion: quizData[index],
+                            user: widget.user,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               },
