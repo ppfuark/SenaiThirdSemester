@@ -33,6 +33,8 @@ class UserViewModel extends ChangeNotifier {
       _databaseService.userWhyStudyColumnName: user.whyStudy,
       _databaseService.userPasswordColumnName: user.password,
     });
+
+    notifyListeners();
   }
 
   Future<User?> login(String userName, String userPassword) async {
@@ -65,7 +67,7 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  void updateUser(int experience, User user) async {
+  void updateUser(User user) async {
     final db = await _databaseService.database;
 
     await db.update(
@@ -74,5 +76,7 @@ class UserViewModel extends ChangeNotifier {
       where: 'name = ?',
       whereArgs: [user.name],
     );
+
+    notifyListeners();
   }
 }

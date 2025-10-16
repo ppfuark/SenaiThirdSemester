@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class ButtonWithIcon extends StatefulWidget {
   final IconData icon;
   final VoidCallback? onPressed;
+  final double? margin;
 
-  const ButtonWithIcon({super.key, required this.icon, this.onPressed});
+  const ButtonWithIcon({
+    super.key,
+    required this.icon,
+    this.onPressed,
+    this.margin,
+  });
 
   @override
   State<ButtonWithIcon> createState() => _ButtonWithIconState();
@@ -27,10 +33,9 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
     return GestureDetector(
       onTap: _onTap,
       child: Container(
-        alignment: AlignmentDirectional.bottomCenter,
+        margin: EdgeInsets.only(left: widget.margin!),
         height: size,
         child: Stack(
-          alignment: AlignmentGeometry.topCenter,
           children: [
             Container(
               width: size,
