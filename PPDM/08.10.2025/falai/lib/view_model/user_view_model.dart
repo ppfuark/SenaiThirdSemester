@@ -49,7 +49,7 @@ class UserViewModel extends ChangeNotifier {
 
       String storedPassword = userData['password'];
 
-      if (storedPassword == userPassword ) {
+      if (storedPassword == userPassword) {
         return User(
           name: userData['name'],
           password: userData['password'],
@@ -63,5 +63,16 @@ class UserViewModel extends ChangeNotifier {
     } else {
       return null;
     }
+  }
+
+  void updateUser(int experience, User user) async {
+    final db = await _databaseService.database;
+
+    await db.update(
+      _databaseService.userTableName,
+      user.toMap(),
+      where: 'name = ?',
+      whereArgs: [user.name],
+    );
   }
 }

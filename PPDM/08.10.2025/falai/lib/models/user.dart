@@ -17,4 +17,8 @@ class User {
   String toString() {
     return 'User(name: $name, age: $age, experience: $experience, whyStudy: $whyStudy)';
   }
+
+  Map<String, Object?> toMap() {
+    return {'name': name, 'password': password,'age': age, 'why_study': whyStudy, 'experience': experience};
+  }
 }
