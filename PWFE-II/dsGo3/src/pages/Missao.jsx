@@ -12,37 +12,65 @@ export function Missao() {
     setMissaoSelecionada(null);
   };
 
-  const todasConcluidas = missoes.length > 0 && missoes.length === missoesConcluidas.length;
+  const progresso = missoesConcluidas.length;
+  const totalMissoes = missoes.length;
+  const todasConcluidas = totalMissoes > 0 && progresso === totalMissoes;
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 text-white p-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-extrabold mb-8 text-center tracking-tight">
-          <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(147,197,253,0.5)]">
-            Missões
-          </span>
-        </h2>
-
-        {todasConcluidas && (
-          <div className="text-center mb-8 animate-pulse">
-            <p className="text-green-400 text-xl font-semibold">
-              🎉 Todas as missões foram concluídas! Excelente trabalho!
-            </p>
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 text-white p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto">
+        <header className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+            <span className="bg-gradient-to-r from-blue-300 to-purple-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(147,197,253,0.6)]">
+              Missões DSGo
+            </span>
+          </h1>
+          
+          {/* Barra de Progresso */}
+          <div className="max-w-2xl mx-auto mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-blue-200 font-medium">
+                Progresso: {progresso}/{totalMissoes}
+              </span>
+              <span className="text-sm text-blue-200 font-medium">
+                {Math.round((progresso / totalMissoes) * 100)}%
+              </span>
+            </div>
+            <div 
+              className="w-full bg-gray-700 rounded-full h-3"
+              role="progressbar"
+              aria-valuenow={progresso}
+              aria-valuemin="0"
+              aria-valuemax={totalMissoes}
+              aria-label="Progresso das missões"
+            >
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
+                style={{ width: `${(progresso / totalMissoes) * 100}%` }}
+              />
+            </div>
           </div>
-        )}
 
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn"
-          style={{
-            animation: "fadeIn 1s ease-in-out",
-          }}
-        >
-          {missoes.map((m) => (
+          {todasConcluidas && (
+            <div 
+              className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 rounded-xl p-4 mb-6 animate-pulse"
+              role="alert"
+              aria-live="polite"
+            >
+              <p className="text-green-300 text-lg font-semibold">
+                🎉 Parabéns! Todas as missões concluídas!
+              </p>
+            </div>
+          )}
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {missoes.map((missao) => (
             <MissaoCard
-              key={m.id}
-              missao={m}
+              key={missao.id}
+              missao={missao}
               onIniciarMissao={setMissaoSelecionada}
-              concluida={missoesConcluidas.includes(m.id)}
+              concluida={missoesConcluidas.includes(missao.id)}
             />
           ))}
         </div>
@@ -51,23 +79,10 @@ export function Missao() {
           <MissaoModal
             missao={missaoSelecionada}
             onClose={() => setMissaoSelecionada(null)}
-            onConcluir={() => concluirMissao(missaoSelecionada.id)}
+            onConcluir={concluirMissao}
           />
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </section>
   );
 }

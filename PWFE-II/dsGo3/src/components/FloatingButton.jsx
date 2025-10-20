@@ -4,6 +4,7 @@ export default function FloatingButton({
   disabled = false,
   color = "#EA5A00",
   lightColor = "#FF6B1A",
+  ariaLabel
 }) {
   const baseShadow = `0 6px 0 ${color}`;
   const activeShadow = `0 2px 0 ${color}`;
@@ -13,6 +14,7 @@ export default function FloatingButton({
     <button
       onClick={onClick}
       disabled={disabled}
+      aria-label={ariaLabel || (typeof children === 'string' ? children : 'Botão flutuante')}
       style={{
         "--btn-color": color,
         "--btn-light": lightColor,
@@ -26,6 +28,7 @@ export default function FloatingButton({
         bg-[color:var(--btn-color)] shadow-[0_6px_0_var(--btn-color)]
         hover:bg-[image:var(--btn-gradient)] 
         active:translate-y-[4px] active:shadow-[0_2px_0_var(--btn-color)] active:bg-[color:var(--btn-light)] active:hover:bg-[color:var(--btn-light)]
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400
       `}
     >
       {children}
