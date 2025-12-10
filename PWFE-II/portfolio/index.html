@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>JavaScript Portfolio</title>
+</head>
+
+<body>
+
+    <aside>
+        <h2>Classes</h2>
+        <ul>
+            <li onclick="executeSourceCode('ex1.js')">Exercise 1 - Basic arithmetic operations</li>
+            <li onclick="executeSourceCode('ex2.js')">Exercise 2 - Average grade</li>
+            <li onclick="executeSourceCode('ex3.js')">Exercise 3 - Paint calculator</li>
+            <li onclick="executeSourceCode('ex4.js')">Exercise 4 - Diff between 2 numbers</li>
+            <li onclick="executeSourceCode('ex5.js')">Exercise 5 - Is a multiple of</li>
+            <li onclick="executeSourceCode('ex6.js')">Exercise 6 - Celsius to Fahrenheit</li>
+            <li onclick="executeSourceCode('ex7.js')">Exercise 7 - Area calculator</li>
+            <br><hr>
+            <li onclick="executeSourceCode('ex8.js')">Exercise 8 - Age verification</li>
+            <li onclick="executeSourceCode('ex9.js')">Exercise 9 - Even or odd</li>
+            <li onclick="executeSourceCode('ex10.js')">Exercise 10 - Greater or equal</li>
+            <li onclick="executeSourceCode('ex11.js')">Exercise 11 - Verify password</li>
+            <li onclick="executeSourceCode('ex12.js')">Exercise 12 - Check temperature</li>
+            <br><hr>
+            <li onclick="executeSourceCode('ex13.js')">Exercise 13 - Is above average</li>
+            <li onclick="executeSourceCode('ex14.js')">Exercise 14 - IMC Calculator</li>
+            <li onclick="executeSourceCode('ex15.js')">Exercise 15 - Leap Year</li>
+            <li onclick="executeSourceCode('ex16.js')">Exercise 16 - Money converter</li>
+            <br><hr>
+            <li onclick="executeSourceCode('ex17.js')">Exercise 17 - Guessing game</li>
+            <br><hr>
+            <li onclick="executeSourceCode('ex18.js')">Exercise 18 - Multiplication table</li>
+            <li onclick="executeSourceCode('ex19.js')">Exercise 19 - Rock, paper, scissor</li>
+            <li onclick="executeSourceCode('ex20.js')">Exercise 20 - Number factorial</li>
+            <br><hr>
+            <li onclick="executeSourceCode('function1.js')">Function exercise 1 - Sum 2 numbers</li>
+            <li onclick="executeSourceCode('function2.js')">Function exercise 2 - Is Even</li>
+            <li onclick="executeSourceCode('function3.js')">Function exercise 3 - Basic arithmetic operations</li>
+            <li onclick="executeSourceCode('function4.js')">Function exercise 4 - Double numbers in a collection</li>
+            <li onclick="executeSourceCode('function5.js')">Function exercise 5 - Filter values greater than 10</li>
+            <li onclick="executeSourceCode('function6.js')">Function exercise 6 - All words to upperCase</li>
+            <br><hr>
+            <li onclick="executeSourceCode('function7.js')">Function exercise 7 - Square of a number</li>
+            <li onclick="executeSourceCode('function8.js')">Function exercise 8 - Celsius to Fahrenheit</li>
+            <li onclick="executeSourceCode('function9.js')">Function exercise 9 - Rectangle area</li>
+            <li onclick="executeSourceCode('function10.js')">Function exercise 10 - Multiply number by idx</li>
+            <li onclick="executeSourceCode('function11.js')">Function exercise 11 - How many odd numbers</li>
+        </ul>
+    </aside>
+
+    <main id="content">
+        <header>
+            <img src="me.jpg" alt="My image">
+            <div class="header-info">
+                <h1>Paulo Henrique Preciliano da Silva</h1>
+                <p>Fullstack Developer | World Skill Trainer</p>
+                <div class="tags">
+                    <span>HTML/CSS</span>
+                    <span>JavaScript</span>
+                    <span>Python</span>
+                    <span>React</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="code-section">
+            <h2>Code Execution</h2>
+            <p class="instruction">Click on any exercise to run it. Results will appear below.</p>
+            
+            <div class="current-exercise">
+                <span id="currentExerciseName">No exercise selected</span>
+            </div>
+            
+            <div class="output-header">
+                <h3>Output</h3>
+            </div>
+            
+            <div class="code-output" id="result">
+                <div class="empty-state">
+                    <p>No output yet. Select an exercise from the sidebar.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function executeSourceCode(file) {
+            const exerciseName = file.replace('.js', '').replace('ex', 'Exercise ').replace('function', 'Function ');
+            document.getElementById('currentExerciseName').textContent = exerciseName;
+            
+            document.querySelectorAll('script[data-class]').forEach(s => s.remove());
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+            loading.textContent = 'Loading...';
+            resultDiv.appendChild(loading);
+            
+            let script = document.createElement('script');
+            script.src = 'classes/' + file;
+            script.dataset.class = file;
+            
+            script.onload = function() {
+                loading.remove();
+            };
+            
+            document.body.appendChild(script);
+        }
+    </script>
+
+</body>
+
+</html>
